@@ -21,7 +21,7 @@ def dailycapy_command(ack, say: Say):
 
     response_json = response.json()
     if response_json != '' and response_json["success"]:
-        data = response_json["data"]
+        data = response_json["data"],
         say(
             text = data["alt"]
             blocks = [
