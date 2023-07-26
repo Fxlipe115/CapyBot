@@ -16,7 +16,7 @@ def dailycapy_command(ack, say: Say):
 
     response.raise_for_status()  # raises exception when not a 2xx response
     response_json = ''
-    print(response)
+    print(response.text())
     if response.status_code != 204:
         response_json = response.json()
 
