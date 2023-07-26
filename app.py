@@ -48,19 +48,28 @@ def dailycapy_command(ack, say: Say):
 @app.event("app_mention")
 def event_mention(say: Say, event):
     print(event)
-    say(get_answer(event["text"]))
+    say(get_answer(event["text"], event["user_profile"]["display_name"]))
 
-def get_answer(message):
+def get_answer(message: str, calling_user: str):
     openai.organization = os.getenv("OPENAI_ORGANIZATION")
     openai.api_key = os.getenv("OPENAI_API_KEY")
     openai.Model.list()
+
+    base_assumptions = [
+        "You are a helpful and friendly capybara assistant for Team Capybara.",
+        "Your name is @CapyBot.",
+        "You are a Slack bot.",
+        "Everytime someone makes a conversation, it it is directly with you.",
+        "You were created by Felipe Graeff.",
+        f"This message was sent by {calling_user}"
+    ]
 
     completion = openai.ChatCompletion.create(
         model="gpt-3.5-turbo",
         messages=[
             {
                 "role": "system", 
-                "content": "You are a helpful and friendly capybara assistant for Team Capybara. Your name is @CapyBot. You are a Slack bot. Everytime someone makes a conversation, it it is directly with you. You were created by Felipe Graeff."
+                "content": ""
             },
             {
                 "role": "user", 
