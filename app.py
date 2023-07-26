@@ -38,7 +38,7 @@ def dailycapy_command(ack, say: Say):
 
 
 @app.event("app_mention")
-def event_mention(event, say: Say):
+def event_mention(say: Say, event):
     print(event)
     say(get_answer(event["text"]))
 
