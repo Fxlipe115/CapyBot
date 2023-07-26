@@ -123,9 +123,8 @@ def get_answer(message: str, user_talking: str):
     if completion.choices[0].finish_reason == 'function_call':
         function_call = completion.choices[0].message.function_call
         completion_function = completion_functions.get(function_call.name)
-        parameters = json.dumps(function_call.parameters)
-        print(parameters)
-        return completion_function['class'](**parameters).call()
+        # arguments = json.dumps(function_call.arguments)
+        return completion_function['class'](**function_call.arguments).call()
     else:
         return completion.choices[0].message.content
 
