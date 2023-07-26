@@ -52,7 +52,7 @@ def get_answer(message):
         messages=[
             {
                 "role": "system", 
-                "content": "You are a helpful and friendly capybara assistant for Team Capybara. Your name is @CapyBot."
+                "content": "You are a helpful and friendly capybara assistant for Team Capybara. Your name is @CapyBot. Everytime someone makes a conversation, it it is directly with you."
             },
             {
                 "role": "user", 
