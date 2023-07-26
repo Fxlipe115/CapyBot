@@ -27,6 +27,14 @@ def dailycapy_command(ack, say: Say):
         say(
             blocks = [
                 {
+                    "type": "section",
+                    "text": {
+                        "type": "plain_text",
+                        "text": "Here is your daily capybara :capybara2:",
+                        "emoji": True
+                    }
+                },
+                {
                 "type": "image",
                 "image_url": data["url"],
                 "alt_text": data["alt"]
