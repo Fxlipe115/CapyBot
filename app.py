@@ -45,10 +45,11 @@ def dailycapy_command(ack, say: Say):
         say("Daily Capy failed. Try again later.")
 
 
-@app.event("app_mention")
+@app.event("app_mention", "message")
 def event_mention(say: Say, event):
     print(event)
     say(get_answer(event["text"], event["user"]))
+
 
 def get_answer(message: str, calling_user: str):
     openai.organization = os.getenv("OPENAI_ORGANIZATION")
