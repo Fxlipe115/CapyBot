@@ -11,12 +11,11 @@ app = App(token=os.environ["SLACK_BOT_TOKEN"])
 def dailycapy_command(ack, say: Say):
     ack()
 
-    url = "https://api.capy.lol/v1/capyoftheday"
+    url = "https://api.capy.lol/v1/capyoftheday?json=true"
     response = requests.get(url)
 
     response.raise_for_status()  # raises exception when not a 2xx response
     response_json = ''
-    print(response.text())
     if response.status_code != 204:
         response_json = response.json()
 
