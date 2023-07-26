@@ -1,3 +1,4 @@
+import json
 import os
 import openai
 from slack_bolt import App, Respond, Say
@@ -23,7 +24,7 @@ def dailycapy_command(ack, say: Say):
     if response_json != '' and response_json["success"]:
         print("Sending capy of the day")
         data = response_json["data"]
-        print(data)
+        print(json.dumps(data, ident=2))
         say(
             blocks = [
                 {
@@ -48,7 +49,7 @@ def dailycapy_command(ack, say: Say):
 
 @app.event("message")
 def handle_message_events(say: Say, event):
-    print(event)
+    print(json.dumps(event))
     if "thread_ts" in event and event["thread_ts"] != event["ts"]:
         say(
             thread_ts = event["ts"],
@@ -60,7 +61,7 @@ def handle_message_events(say: Say, event):
 
 @app.event("app_mention")
 def event_mention(say: Say, event):
-    print(event)
+    print(json.dumps(event))
     say(
         thread_ts = event["ts"],
         text = get_answer(event["text"], event["user"])
@@ -76,7 +77,7 @@ def get_answer(message: str, calling_user: str):
         "You are a helpful and friendly capybara assistant for Team Capybara.",
         "Your name is <@U05K30V08U9>.",
         "You are a Slack bot.",
-        "Everytime someone makes a conversation, it it is directly with you.",
+        "Everytime someone makes a conversation, it is directed to you.",
         "You were created by Felipe Graeff.",
         "You are native to Rio Grande do Sul, Brazil"
         "When answering in portuguese you speak with the dialect of Rio Grande do Sul in Brazil"
