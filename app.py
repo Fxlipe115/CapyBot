@@ -1,11 +1,10 @@
 import json
 import os
-import openai
 from slack_bolt import App, Say
 from slack_bolt.adapter.socket_mode import SocketModeHandler
 import requests
-from pydantic import BaseModel
-from typing import Literal
+
+from openai_helper import OpenAi
 
 
 # Install the Slack app and get xoxb- token in advance
@@ -52,82 +51,27 @@ def dailycapy_command(ack, say: Say):
 
 @app.event('message')
 def handle_message_events(say: Say, event):
+    ai = OpenAi()
     print(json.dumps(event))
     if 'thread_ts' in event and event['thread_ts'] != event['ts']:
         say(
             thread_ts = event['ts'],
-            text = get_answer(event['text'], event['user'])
+            text = ai.get_answer(event['text'], event['user'])
         )
     elif event['channel_type'] == 'im':
-        say(get_answer(event['text'], event['user']))
+        say(ai.get_answer(event['text'], event['user']))
 
 
 @app.event('app_mention')
 def event_mention(say: Say, event):
+    ai = OpenAi()
     print(json.dumps(event))
     say(
         thread_ts = event['ts'],
-        text = get_answer(event['text'], event['user'])
+        text = ai.get_answer(event['text'], event['user'])
     )
 
 
-class WeatherReport(BaseModel):
-    city: str
-    unit: Literal['°C', '°F']
-
-    def call(self):
-        return f'report called with city={self.city} and unit={self.unit}'
-
-completion_functions = {
-    'get_weather_report': {
-        'description': {
-            "name": "get_weather_report",
-            "description": "Get weather report for given city",
-            "parameters": WeatherReport.model_json_schema()
-        },
-        'class': WeatherReport
-    }
-}
-
-def get_answer(message: str, user_talking: str):
-    openai.organization = os.getenv('OPENAI_ORGANIZATION')
-    openai.api_key = os.getenv('OPENAI_API_KEY')
-    openai.Model.list()
-
-    base_assumptions = [
-        'You are a helpful and friendly capybara assistant for Team Capybara.',
-        'Your name is <@U05K30V08U9>.',
-        'You are a Slack bot.',
-        'Everytime someone makes a conversation, it is directed to you.',
-        'You were created by Felipe Graeff.',
-        'You are native to Rio Grande do Sul, Brazil',
-        'When answering in portuguese you speak with the dialect of Rio Grande do Sul in Brazil',
-        'You answer with capybara puns.'
-        f'The name of the person talking to you is <@{user_talking}>!'
-    ]
-
-    completion = openai.ChatCompletion.create(
-        model='gpt-3.5-turbo-0613',
-        messages=[
-            {
-                'role': 'system', 
-                'content': ' '.join(base_assumptions)
-            },
-            {
-                'role': 'user', 
-                'content': message
-            }
-        ],
-        functions=list(map(lambda x: x['description'], completion_functions.values()))
-    )
-    if completion.choices[0].finish_reason == 'function_call':
-        function_call = completion.choices[0].message.function_call
-        completion_function = completion_functions.get(function_call.name)
-        arguments = json.loads(function_call.arguments)
-        print(function_call.arguments)
-        return completion_function['class'](**arguments).call()
-    else:
-        return completion.choices[0].message.content
 
 
 if __name__ == '__main__':
