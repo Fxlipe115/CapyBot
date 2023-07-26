@@ -4,7 +4,7 @@ from slack_bolt import App, Say
 from slack_bolt.adapter.socket_mode import SocketModeHandler
 import requests
 
-from .openai_helper import OpenAi
+from openai_helper import OpenAi
 
 
 # Install the Slack app and get xoxb- token in advance
