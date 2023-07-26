@@ -69,7 +69,7 @@ def get_answer(message: str, calling_user: str):
         messages=[
             {
                 "role": "system", 
-                "content": ""
+                "content": ' '.join(base_assumptions)
             },
             {
                 "role": "user", 
