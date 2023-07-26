@@ -39,8 +39,8 @@ def dailycapy_command(ack, say: Say):
 
 @app.event("app_mention")
 def event_mention(event, say: Say):
+    print(event)
     say(get_answer(event["text"]))
-
 
 def get_answer(message):
     openai.organization = os.getenv("OPENAI_ORGANIZATION")
