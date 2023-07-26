@@ -23,6 +23,7 @@ def dailycapy_command(ack, say: Say):
     if response_json != '' and response_json["success"]:
         data = response_json["data"]
         say(
+            text = data["alt"]
             blocks = [
                 {
                 "type": "image",
@@ -37,6 +38,7 @@ def dailycapy_command(ack, say: Say):
 
 @app.event("app_mention")
 def event_mention(event, say: Say):
+    print("mentioned")
     say(get_answer(event["text"]))
 
 
