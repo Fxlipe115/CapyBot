@@ -75,8 +75,8 @@ class WeatherReport(BaseModel):
     city: str
     unit: Literal['°C', '°F']
 
-def get_weather_report(city, unit):
-    return f'report called with city={self.city} and unit={self.unit}'
+    def call(self):
+        return f'report called with city={self.city} and unit={self.unit}'
 
 completion_functions = {
     'get_weather_report': {
@@ -85,7 +85,7 @@ completion_functions = {
             "description": "Get weather report for given city",
             "parameters": WeatherReport.model_json_schema()
         },
-        'function': get_weather_report
+        'class': WeatherReport
     }
 }
 
@@ -125,7 +125,7 @@ def get_answer(message: str, user_talking: str):
         completion_function = completion_functions.get(function_call.name)
         arguments = json.loads(function_call.arguments)
         print(function_call.arguments)
-        return completion_function['function'](*arguments)
+        return completion_function['class'](*arguments).call()
     else:
         return completion.choices[0].message.content
 
