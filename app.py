@@ -45,13 +45,25 @@ def dailycapy_command(ack, say: Say):
         say("Daily Capy failed. Try again later.")
 
 
-@app.event("app_mention")
-def event_mention(say: Say, event):
+
+@app.event("message")
+def handle_message_events(body, logger):
+    
+    logger.info(body)
+
+
+@app.event("message:im")
+def direct_message_event(say: Say, event):
     print(event)
-    say(
-        thread_ts = event["ts"],
-        text = get_answer(event["text"], event["user"])
-    )
+    say(get_answer(event["text"], event["user"]))
+
+# @app.event("app_mention")
+# def event_mention(say: Say, event):
+#     print(event)
+#     say(
+#         thread_ts = event["ts"],
+#         text = get_answer(event["text"], event["user"])
+#     )
 
 
 def get_answer(message: str, calling_user: str):
