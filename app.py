@@ -22,8 +22,8 @@ def dailycapy_command(ack, say: Say):
     response_json = response.json()
     if response_json != '' and response_json["success"]:
         print("Sending capy of the day")
-        print(data)
         data = response_json["data"]
+        print(data)
         say(
             blocks = [
                 {
