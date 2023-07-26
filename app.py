@@ -117,7 +117,10 @@ def get_answer(message: str, user_talking: str):
         ]
     )
     print(completion)
-    return completion.choices[0].message.content
+    if completion.finish_reason == "function_call":
+        return "function call"
+    else:
+        return completion.choices[0].message.content
 
 
 if __name__ == '__main__':
