@@ -15,12 +15,12 @@ def dailycapy_command(ack, say: Say):
     response = requests.get(url)
 
     response.raise_for_status()  # raises exception when not a 2xx response
-    response_jason = ''
+    response_json = ''
     if response.status_code != 204:
         response_json = response.json()
 
     response_json = response.json()
-    if response_jason != '' and response_json["success"]:
+    if response_json != '' and response_json["success"]:
         data = response_json["data"]
         say(
             blocks = [
