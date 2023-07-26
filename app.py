@@ -8,11 +8,6 @@ from pydantic import BaseModel
 from typing import Literal
 
 
-class WeatherReport(BaseModel):
-    city: str
-    unit: Literal['°C', '°F']
-
-
 # Install the Slack app and get xoxb- token in advance
 app = App(token=os.environ['SLACK_BOT_TOKEN'])
 
@@ -76,8 +71,12 @@ def event_mention(say: Say, event):
     )
 
 
-def get_weather_report(params: WeatherReport):
-    return f'report called with city={params.city} and unit={params.unit}'
+class WeatherReport(BaseModel):
+    city: str
+    unit: Literal['°C', '°F']
+
+    def call(self):
+        return f'report called with city={self.city} and unit={self.unit}'
 
 completion_functions = {
     'get_weather_report': {
@@ -86,7 +85,7 @@ completion_functions = {
             "description": "Get weather report for given city",
             "parameters": WeatherReport.model_json_schema()
         },
-        'function': get_weather_report
+        'class': WeatherReport
     }
 }
 
@@ -124,7 +123,7 @@ def get_answer(message: str, user_talking: str):
     if completion.choices[0].finish_reason == 'function_call':
         function_call = completion.choices[0].message.function_call
         completion_function = completion_functions.get(function_call.name)
-        return completion_function['function'](function_call['parameters'])
+        return completion_function['class'](**json.dumps(function_call['parameters'])).call()
     else:
         return completion.choices[0].message.content
 
