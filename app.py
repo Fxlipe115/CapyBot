@@ -7,7 +7,7 @@ import requests
 # Install the Slack app and get xoxb- token in advance
 app = App(token=os.environ["SLACK_BOT_TOKEN"])
 
-@app.command("/dailycapy")
+@app.command("/capyoftheday")
 def dailycapy_command(ack, say: Say):
     ack()
 
