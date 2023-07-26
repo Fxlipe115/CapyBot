@@ -125,7 +125,7 @@ def get_answer(message: str, user_talking: str):
         completion_function = completion_functions.get(function_call.name)
         arguments = json.loads(function_call.arguments)
         print(function_call.arguments)
-        return completion_function['class'](*arguments).call()
+        return completion_function['class'](**arguments).call()
     else:
         return completion.choices[0].message.content
 
