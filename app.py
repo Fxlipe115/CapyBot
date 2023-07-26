@@ -45,7 +45,7 @@ def dailycapy_command(ack, say: Say):
         say("Daily Capy failed. Try again later.")
 
 
-@app.event("app_mention", "message")
+@app.event("app_mention")
 def event_mention(say: Say, event):
     print(event)
     say(get_answer(event["text"], event["user"]))
