@@ -68,7 +68,7 @@ def event_mention(say: Say, event):
     )
 
 
-def get_answer(message: str, calling_user: str):
+def get_answer(message: str, user_talking: str):
     openai.organization = os.getenv("OPENAI_ORGANIZATION")
     openai.api_key = os.getenv("OPENAI_API_KEY")
     openai.Model.list()
@@ -82,11 +82,11 @@ def get_answer(message: str, calling_user: str):
         "You are native to Rio Grande do Sul, Brazil",
         "When answering in portuguese you speak with the dialect of Rio Grande do Sul in Brazil",
         "You answer with capybara puns."
-        f"The name of the person talking to you is <@{calling_user}>!"
+        f"The name of the person talking to you is <@{user_talking}>!"
     ]
 
     completion = openai.ChatCompletion.create(
-        model="gpt-3.5-turbo",
+        model="gpt-3.5-turbo-0613",
         messages=[
             {
                 "role": "system", 
