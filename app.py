@@ -46,17 +46,17 @@ def dailycapy_command(ack, say: Say):
 
 
 
-# @app.event("message")
-# def handle_message_events(body, logger):
-    
-#     logger.info(body)
-
-
 @app.event("message")
 def handle_message_events(say: Say, event):
     print(event)
-    if event["channel_type"] == "im":
+    if "thread_ts" in event and event["thread_ts"] != event["ts"]:
+        say(
+            thread_ts = event["ts"],
+            text = get_answer(event["text"], event["user"])
+        )
+    elif event["channel_type"] == "im":
         say(get_answer(event["text"], event["user"]))
+
 
 @app.event("app_mention")
 def event_mention(say: Say, event):
