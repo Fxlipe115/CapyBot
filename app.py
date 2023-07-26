@@ -61,7 +61,7 @@ def get_answer(message: str, calling_user: str):
         "You are a Slack bot.",
         "Everytime someone makes a conversation, it it is directly with you.",
         "You were created by Felipe Graeff.",
-        f"This message was sent by <@{calling_user}>!"
+        f"The name of the person talking to you is <@{calling_user}>!"
     ]
 
     completion = openai.ChatCompletion.create(
