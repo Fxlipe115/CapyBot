@@ -77,7 +77,18 @@ def event_mention(say: Say, event):
 
 
 def get_weather_report(params: WeatherReport):
-    print(f'report called with city={params.city} and unit={params.unit}')
+    return f'report called with city={params.city} and unit={params.unit}'
+
+completion_functions = {
+    'get_weather_report': {
+        'description': {
+            "name": "get_weather_report",
+            "description": "Get weather report for given city",
+            "parameters": WeatherReport.model_json_schema()
+        },
+        'function': get_weather_report
+    }
+}
 
 def get_answer(message: str, user_talking: str):
     openai.organization = os.getenv('OPENAI_ORGANIZATION')
@@ -108,17 +119,11 @@ def get_answer(message: str, user_talking: str):
                 'content': message
             }
         ],
-        functions=[
-            {
-            "name": "get_weather_report",
-            "description": "Get weather report for given city",
-            "parameters": WeatherReport.model_json_schema()
-            }
-        ]
+        functions=list(map(completion_functions, lambda x: x.description))
     )
-    print(completion)
-    if completion.choices[0].finish_reason == "function_call":
-        return "function call"
+    if completion.choices[0].finish_reason == 'function_call':
+        function_call = completion.choices[0].message.function_call
+        return function_call.function(function_call.parameters)
     else:
         return completion.choices[0].message.content
 
