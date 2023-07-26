@@ -52,10 +52,11 @@ def handle_message_events(body, logger):
     logger.info(body)
 
 
-@app.event("message:im")
+@app.event("message")
 def direct_message_event(say: Say, event):
     print(event)
-    say(get_answer(event["text"], event["user"]))
+    if event["channel_type"] == "im":
+        say(get_answer(event["text"], event["user"]))
 
 # @app.event("app_mention")
 # def event_mention(say: Say, event):
