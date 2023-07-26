@@ -18,7 +18,7 @@ class Functions:
     functions: Dict[str, FunctionDescriptionAndClass]
 
     def __init__(self) -> None:
-        function = dict()
+        self.functions = dict()
 
     def register(self, name: str, description: str, function: CallableFunction):
         self.functions[name] = {
