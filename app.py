@@ -14,10 +14,13 @@ def dailycapy_command(ack, say: Say):
     url = "https://api.capy.lol/v1/capyoftheday"
     response = requests.get(url)
 
-    # Print the response
+    response.raise_for_status()  # raises exception when not a 2xx response
+    response_jason = ''
+    if response.status_code != 204:
+        response_json = response.json()
+
     response_json = response.json()
-    print(response_json)
-    if response_json["success"]:
+    if response_jason != '' and response_json["success"]:
         data = response_json["data"]
         say(
             blocks = [
