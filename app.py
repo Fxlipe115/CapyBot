@@ -119,7 +119,7 @@ def get_answer(message: str, user_talking: str):
                 'content': message
             }
         ],
-        functions=list(map(completion_functions, lambda x: x.description))
+        functions=list(map(completion_functions.value(), lambda x: x['description']))
     )
     if completion.choices[0].finish_reason == 'function_call':
         function_call = completion.choices[0].message.function_call
