@@ -48,7 +48,10 @@ def dailycapy_command(ack, say: Say):
 @app.event("app_mention")
 def event_mention(say: Say, event):
     print(event)
-    say(get_answer(event["text"], event["user"]))
+    say(
+        thread_ts = event["ts"],
+        text = get_answer(event["text"], event["user"])
+    )
 
 
 def get_answer(message: str, calling_user: str):
