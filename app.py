@@ -10,7 +10,6 @@ from typing import Literal
 
 class WeatherReport(BaseModel):
     city: str
-    temperature: int
     unit: Literal['°C', '°F']
 
 
@@ -76,6 +75,9 @@ def event_mention(say: Say, event):
         text = get_answer(event['text'], event['user'])
     )
 
+
+def get_weather_report(params: WeatherReport):
+    print(f'report called with city={params.city} and unit={params.unit}')
 
 def get_answer(message: str, user_talking: str):
     openai.organization = os.getenv('OPENAI_ORGANIZATION')
