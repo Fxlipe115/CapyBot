@@ -48,7 +48,7 @@ def dailycapy_command(ack, say: Say):
 @app.event("app_mention")
 def event_mention(say: Say, event):
     print(event)
-    say(get_answer(event["text"], event["user_profile"]["display_name"]))
+    say(get_answer(event["text"], event["user"]))
 
 def get_answer(message: str, calling_user: str):
     openai.organization = os.getenv("OPENAI_ORGANIZATION")
@@ -61,7 +61,7 @@ def get_answer(message: str, calling_user: str):
         "You are a Slack bot.",
         "Everytime someone makes a conversation, it it is directly with you.",
         "You were created by Felipe Graeff.",
-        f"This message was sent by {calling_user}"
+        f"This message was sent by <@{calling_user}>!"
     ]
 
     completion = openai.ChatCompletion.create(
