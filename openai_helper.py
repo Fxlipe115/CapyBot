@@ -1,7 +1,6 @@
-from ast import List
 import json
 import os
-from typing import Literal, TypedDict
+from typing import List, Literal, TypedDict
 import openai
 
 from functions.functions import Functions

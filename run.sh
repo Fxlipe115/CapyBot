@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 source tokens.env
-python app.py
+python3 app.py
