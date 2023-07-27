@@ -1,10 +1,16 @@
-from typing import Dict
+import time
+from datetime import datetime, timedelta
+from typing import Dict, TypedDict
 
 from assistant.assistant import Assistant
 
 
 class Contexts:
-    contexts: Dict[str, Assistant]
+    class AssistantWithCreationTime(TypedDict):
+        assistant: Assistant
+        creationTimeStamp: datetime
+
+    contexts: Dict[str, AssistantWithCreationTime]
     
     def __init__(self) -> None:
         self.contexts = {}
@@ -12,7 +18,10 @@ class Contexts:
     def get_assistant(self, context: str) -> Assistant:
         self.__delete_obsolete_contexts()
         if context not in self.contexts:
-            self.contexts[context] = Assistant()
+            self.contexts[context] = {
+                'assistant': Assistant(),
+                'creationTimeStamp': datetime.now()
+            }
         return self.contexts[context]
     
     def __delete_obsolete_contexts(self) -> None:
@@ -20,5 +29,6 @@ class Contexts:
             if self.__is_obsolete(self.contexts[context]):
                 self.contexts.pop(context)
 
-    def __is_obsolete(self, context: str) -> bool:
+    def __is_obsolete(self, context: AssistantWithCreationTime) -> bool:
+        print(context['creationTimeStamp'] - datetime.now())
         return False
