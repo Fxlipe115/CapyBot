@@ -30,4 +30,5 @@ class Contexts:
                 self.contexts.pop(context)
 
     def __is_obsolete(self, context: AssistantWithCreationTime) -> bool:
-        return (context['creationTimeStamp'] - datetime.now()).
+        print((context['creationTimeStamp'] - datetime.now()))
+        return False
