@@ -26,8 +26,8 @@ class OpenAi():
         openai.organization = os.getenv('OPENAI_ORGANIZATION')
         openai.api_key = os.getenv('OPENAI_API_KEY')
 
-        self._add_message({'system', f'The name of the person talking to you is <@{user_talking}>!'})
-        self._add_message({'user', message})
+        self._add_message('system', f'The name of the person talking to you is <@{user_talking}>!')
+        self._add_message('user', message)
 
         completion = self._call_chat_gpt()
         
