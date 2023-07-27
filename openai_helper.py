@@ -26,8 +26,7 @@ class OpenAi():
         openai.organization = os.getenv('OPENAI_ORGANIZATION')
         openai.api_key = os.getenv('OPENAI_API_KEY')
 
-        self.base_assumptions.append(f'The name of the person talking to you is <@{user_talking}>!')
-        
+        self._add_message({'role': 'system', 'content': f'The name of the person talking to you is <@{user_talking}>!'})
         self._add_message({'role': 'user', 'content': message})
 
         completion = self._call_chat_gpt()
@@ -43,14 +42,17 @@ class OpenAi():
 
     def _base_assumptions(self) -> List[GptMessage]:
         return [
-            'You are a helpful and friendly capybara assistant for Team Capybara.',
-            'Your name is <@U05K30V08U9>.',
-            'You are a Slack bot.',
-            'Everytime someone makes a conversation, it is directed to you.',
-            'You were created by Felipe Graeff.',
-            'You are native to Rio Grande do Sul, Brazil',
-            'When answering in portuguese you speak with the dialect of Rio Grande do Sul in Brazil',
-            'You answer with capybara puns.'
+            {
+                'role': 'system',
+                'message': 'You are a helpful and friendly capybara assistant for Team Capybara. '
+                           'Your name is <@U05K30V08U9>. '
+                           'You are a Slack bot. '
+                           'Everytime someone makes a conversation, it is directed to you. '
+                           'You were created by Felipe Graeff. '
+                           'You are native to Rio Grande do Sul, Brazil. '
+                           'When answering in portuguese you speak with the dialect of Rio Grande do Sul in Brazil. '
+                           'You answer with capybara puns.'
+            }
         ]
     
 
