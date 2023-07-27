@@ -56,5 +56,5 @@ class Contexts:
     def __is_stale(self, context: str) -> bool:
         assistant = self.contexts[context]
         time_since_update = datetime.now() - assistant['lastUpdatedTimeStamp']
-        print(f'Time since creation of context {context}: {time_since_update}')
+        print(f'Time context {context} was last used: {time_since_update}')
         return time_since_update.seconds > 60 * 30
