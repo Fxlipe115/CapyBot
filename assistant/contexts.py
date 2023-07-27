@@ -34,6 +34,6 @@ class Contexts:
     def __is_obsolete(self, context: str) -> bool:
         assistant = self.contexts[context]
         time_since_creation = datetime.now() - assistant['creationTimeStamp']
-        print('Time since creation of context {context}: {time_since_creation}')
+        print(f'Time since creation of context {context}: {time_since_creation}')
         return time_since_creation.seconds > 60
         # return time_since_creation.seconds > 60 * 60 * 1
