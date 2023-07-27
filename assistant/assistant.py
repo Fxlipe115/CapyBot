@@ -41,8 +41,9 @@ class Assistant():
             arguments = json.loads(function_call.arguments)
             return self.functions.call_function(function_name, **arguments)
         else:
-            self.__add_message('')
-            return completion.choices[0].message.content
+            content = completion.choices[0].message.content
+            self.__add_message('assistant', content)
+            return content
         
 
     def __base_assumptions(self) -> List[GptMessage]:
