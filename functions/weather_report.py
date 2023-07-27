@@ -9,7 +9,7 @@ class WeatherReport(CallableFunction):
 
     def call(self):
         self.city.replace(' ', '+')
-        url = f'wttr.in/{self.city}'
+        url = f'https:/wttr.in/{self.city}'
         response = requests.get(url)
         # return f'report called with city={self.city} and unit={self.unit}'
         return f'{response}'
