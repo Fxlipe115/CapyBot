@@ -26,9 +26,13 @@ class Contexts:
     
     def __delete_obsolete_contexts(self) -> None:
         for context in self.contexts:
-            if self.__is_obsolete(self.contexts[context]):
+            if self.__is_obsolete(context):
+                print(f'Removing context {context}')
                 self.contexts.pop(context)
 
-    def __is_obsolete(self, context: AssistantWithCreationTime) -> bool:
-        print((context['creationTimeStamp'] - datetime.now()))
-        return False
+    def __is_obsolete(self, context: str) -> bool:
+        assistant = self.contexts[context]
+        time_since_creation = datetime.now() - assistant['creationTimeStamp']
+        print('Time since creation of context {context}: {time_since_creation}')
+        return time_since_creation.seconds > 60
+        # return time_since_creation.seconds > 60 * 60 * 1
