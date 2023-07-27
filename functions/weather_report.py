@@ -8,7 +8,7 @@ class WeatherReport(CallableFunction):
     unit: Literal['°C', '°F']
 
     def call(self):
-        self.city.replace(' ', '+')
+        self.city = self.city.replace(' ', '+')
         url = f'https:/wttr.in/{self.city}'
         response = requests.get(url)
         # return f'report called with city={self.city} and unit={self.unit}'
