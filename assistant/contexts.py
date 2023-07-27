@@ -20,5 +20,5 @@ class Contexts:
             if self.__is_obsolete(self.contexts[context]):
                 self.contexts.pop(context)
 
-    def __is_obdsolete(self, context: str) -> bool:
+    def __is_obsolete(self, context: str) -> bool:
         return False
