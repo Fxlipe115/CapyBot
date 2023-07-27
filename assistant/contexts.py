@@ -22,7 +22,7 @@ class Contexts:
                 'assistant': Assistant(),
                 'creationTimeStamp': datetime.now()
             }
-        return self.contexts[context]
+        return self.contexts[context]['assistant']
     
     def __delete_obsolete_contexts(self) -> None:
         for context in self.contexts:
@@ -30,5 +30,4 @@ class Contexts:
                 self.contexts.pop(context)
 
     def __is_obsolete(self, context: AssistantWithCreationTime) -> bool:
-        print(context['creationTimeStamp'] - datetime.now())
-        return False
+        return (context['creationTimeStamp'] - datetime.now()).
