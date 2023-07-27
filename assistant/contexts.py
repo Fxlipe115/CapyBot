@@ -18,6 +18,7 @@ class Contexts:
     def get_assistant(self, context: str) -> Assistant:
         self.__delete_obsolete_contexts()
         if context not in self.contexts:
+            print(f'Creating context {context}')
             self.contexts[context] = {
                 'assistant': Assistant(),
                 'creationTimeStamp': datetime.now()
