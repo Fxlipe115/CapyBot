@@ -11,4 +11,4 @@ class WeatherReport(CallableFunction):
         url = f'https://wttr.in/{self.city}'
         response = requests.get(url)
         # return f'report called with city={self.city} and unit={self.unit}'
-        return f'{response}'
+        return f'{response.json()}'
