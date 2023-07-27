@@ -26,7 +26,6 @@ def dailycapy_command(ack, say: Say):
     if response_json != '' and response_json['success']:
         print('Sending capy of the day')
         data = response_json['data']
-        print(json.dumps(data, ident=2))
         say(
             blocks = [
                 {
@@ -51,22 +50,23 @@ def dailycapy_command(ack, say: Say):
 
 @app.event('message')
 def handle_message_events(say: Say, event):
-    print(json.dumps(event))
     if 'thread_ts' in event and event['thread_ts'] != event['ts']:
+        print(f'message')
         ai = contexts.get_assistant(event['thread_ts'])
         say(
             thread_ts = event['thread_ts'],
             text = ai.get_answer(event['text'], event['user'])
         )
     elif event['channel_type'] == 'im':
+        print(f'Event: message:im')
         ai = contexts.get_assistant(event['user'])
         say(ai.get_answer(event['text'], event['user']))
 
 
 @app.event('app_mention')
 def event_mention(say: Say, event):
+    print(f'Event: app_mention')
     ai = contexts.get_assistant(event['ts'])
-    print(json.dumps(event))
     say(
         thread_ts = event['ts'],
         text = ai.get_answer(event['text'], event['user'])
