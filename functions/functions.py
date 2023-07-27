@@ -1,6 +1,6 @@
 import json
-from typing import Any, ClassVar, List, Literal, Type
-from gpt_function import CallableFunction
+from typing import Any, List, Type
+from functions.callable_function import CallableFunction
 from typing import Dict, TypedDict
 
 class FunctionDescription(TypedDict):

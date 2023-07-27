@@ -3,8 +3,7 @@ import os
 from slack_bolt import App, Say
 from slack_bolt.adapter.socket_mode import SocketModeHandler
 import requests
-
-from openai_helper import OpenAi
+from assistant import Assistant
 
 
 # Install the Slack app and get xoxb- token in advance
@@ -51,7 +50,7 @@ def dailycapy_command(ack, say: Say):
 
 @app.event('message')
 def handle_message_events(say: Say, event):
-    ai = OpenAi()
+    ai = Assistant()
     print(json.dumps(event))
     if 'thread_ts' in event and event['thread_ts'] != event['ts']:
         say(
@@ -64,7 +63,7 @@ def handle_message_events(say: Say, event):
 
 @app.event('app_mention')
 def event_mention(say: Say, event):
-    ai = OpenAi()
+    ai = Assistant()
     print(json.dumps(event))
     say(
         thread_ts = event['ts'],

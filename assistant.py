@@ -7,7 +7,7 @@ from functions.functions import Functions
 from functions.weather_report import WeatherReport
 
 Roles = Literal['system', 'user']
-class OpenAi():
+class Assistant():
     class GptMessage(TypedDict):
         role: Roles
         content: str
@@ -17,19 +17,22 @@ class OpenAi():
     functions: Functions
 
     def __init__(self) -> None:
-        self._base_assumptions()
+        self.__base_assumptions()
         self.functions = Functions()
         self.functions.register('get_weather_report', 'Return the weather report for a given city', WeatherReport)
 
+    @property
+    def model(self) -> str:
+        return 'gpt-3.5-turbo-0613'
 
     def get_answer(self, message: str, user_talking: str):
         openai.organization = os.getenv('OPENAI_ORGANIZATION')
         openai.api_key = os.getenv('OPENAI_API_KEY')
 
-        self._add_message('system', f'The name of the person talking to you is <@{user_talking}>!')
-        self._add_message('user', message)
+        self.__add_message('system', f'The name of the person talking to you is <@{user_talking}>!')
+        self.__add_message('user', message)
 
-        completion = self._call_chat_gpt()
+        completion = self.__call_chat_gpt()
         
         if completion.choices[0].finish_reason == 'function_call':
             function_call = completion.choices[0].message.function_call
@@ -40,26 +43,26 @@ class OpenAi():
             return completion.choices[0].message.content
         
 
-    def _base_assumptions(self) -> List[GptMessage]:
+    def __base_assumptions(self) -> List[GptMessage]:
         self.context = []
-        self._add_message('system', 'You are a helpful and friendly capybara assistant for Team Capybara.')
-        self._add_message('system', 'You are a helpful and friendly capybara assistant for Team Capybara.')
-        self._add_message('system', 'Your name is <@U05K30V08U9>.')
-        self._add_message('system', 'You are a Slack bot.')
-        self._add_message('system', 'Everytime someone makes a conversation, it is directed to you.')
-        self._add_message('system', 'You were created by Felipe Graeff.')
-        self._add_message('system', 'You are native to Rio Grande do Sul, Brazil.')
-        self._add_message('system', 'When answering in portuguese you speak with the dialect of Rio Grande do Sul in Brazil.')
-        self._add_message('system', 'You answer with capybara puns.')
+        self.__add_message('system', 'You are a helpful and friendly capybara assistant for Team Capybara.')
+        self.__add_message('system', 'You are a helpful and friendly capybara assistant for Team Capybara.')
+        self.__add_message('system', 'Your name is <@U05K30V08U9>.')
+        self.__add_message('system', 'You are a Slack bot.')
+        self.__add_message('system', 'Everytime someone makes a conversation, it is directed to you.')
+        self.__add_message('system', 'You were created by Felipe Graeff.')
+        self.__add_message('system', 'You are native to Rio Grande do Sul, Brazil.')
+        self.__add_message('system', 'When answering in portuguese you speak with the dialect of Rio Grande do Sul in Brazil.')
+        self.__add_message('system', 'You answer with capybara puns.')
     
 
-    def _add_message(self, role: Roles, content: str):
+    def __add_message(self, role: Roles, content: str):
         self.context.append({"role":role, "content": content})
 
 
-    def _call_chat_gpt(self):
+    def __call_chat_gpt(self):
         return openai.ChatCompletion.create(
-            model='gpt-3.5-turbo-0613',
+            model=self.model,
             messages=self.context,
             functions=self.functions.get_functions()
         )

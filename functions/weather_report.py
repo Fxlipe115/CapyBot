@@ -1,9 +1,15 @@
 from typing import Literal
-from gpt_function import CallableFunction
+
+import requests
+from functions.callable_function import CallableFunction
 
 class WeatherReport(CallableFunction):
     city: str
     unit: Literal['°C', '°F']
 
     def call(self):
-        return f'report called with city={self.city} and unit={self.unit}'
+        self.city.replace(' ', '+')
+        url = f'wttr.in/{self.city}'
+        response = requests.get(url)
+        # return f'report called with city={self.city} and unit={self.unit}'
+        return f'{response}'
