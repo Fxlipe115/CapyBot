@@ -3,5 +3,5 @@ from pydantic import BaseModel
 
 class CallableFunction(ABC, BaseModel):
     @abstractmethod
-    def call(self):
+    def call(self) -> str:
         pass
