@@ -3,11 +3,12 @@ import os
 from slack_bolt import App, Say
 from slack_bolt.adapter.socket_mode import SocketModeHandler
 import requests
-from assistant import Assistant
+from assistant.contexts import Contexts
 
 
 # Install the Slack app and get xoxb- token in advance
 app = App(token=os.environ['SLACK_BOT_TOKEN'])
+contexts = Contexts()
 
 @app.command('/capyoftheday')
 def dailycapy_command(ack, say: Say):
@@ -50,20 +51,21 @@ def dailycapy_command(ack, say: Say):
 
 @app.event('message')
 def handle_message_events(say: Say, event):
-    ai = Assistant()
     print(json.dumps(event))
     if 'thread_ts' in event and event['thread_ts'] != event['ts']:
+        ai = contexts.get_assistant('a')
         say(
-            thread_ts = event['ts'],
+            thread_ts = event['thread_ts'],
             text = ai.get_answer(event['text'], event['user'])
         )
     elif event['channel_type'] == 'im':
+        ai = contexts.get_assistant('a')
         say(ai.get_answer(event['text'], event['user']))
 
 
 @app.event('app_mention')
 def event_mention(say: Say, event):
-    ai = Assistant()
+    ai = contexts.get_assistant('a')
     print(json.dumps(event))
     say(
         thread_ts = event['ts'],

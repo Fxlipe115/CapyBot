@@ -6,7 +6,8 @@ import openai
 from functions.functions import Functions
 from functions.weather_report import WeatherReport
 
-Roles = Literal['system', 'user']
+Roles = Literal['system', 'user', 'assistant', 'function']
+
 class Assistant():
     class GptMessage(TypedDict):
         role: Roles
@@ -40,6 +41,7 @@ class Assistant():
             arguments = json.loads(function_call.arguments)
             return self.functions.call_function(function_name, **arguments)
         else:
+            self.__add_message('')
             return completion.choices[0].message.content
         
 
