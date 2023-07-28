@@ -72,7 +72,7 @@ def event_mention(say: Say, event):
     say(
         thread_ts=event['ts'],
         text=answer['text'],
-        blocks=answer['blocks']
+        blocks=answer.get('blocks')
     )
 
 
