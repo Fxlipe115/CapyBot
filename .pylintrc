@@ -1,0 +1,6 @@
+[MASTER]
+disable=
+    empty-docstring,
+    missing-class-docstring,
+    missing-function-docstring,
+    missing-module-docstring

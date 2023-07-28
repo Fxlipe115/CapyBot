@@ -1,6 +1,6 @@
 from typing import Literal
-import requests
 from functions.callable_function import CallableFunction
+
 
 class WeatherReport(CallableFunction):
     city: str
