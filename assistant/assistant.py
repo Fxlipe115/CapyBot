@@ -1,6 +1,7 @@
+from functools import wraps
 import json
 import os
-from typing import List, Literal, TypedDict
+from typing import Callable, List, Literal, TypedDict
 import openai
 from assistant.types import AssistantAnswer
 
@@ -9,7 +10,6 @@ from functions.generate_image import GenerateImage
 from functions.weather_report import WeatherReport
 
 Roles = Literal['system', 'user', 'assistant', 'function']
-
 
 class Assistant():
     class GptMessage(TypedDict):
@@ -57,6 +57,13 @@ class Assistant():
             content = completion.choices[0].message.content
             self.__add_message('assistant', content)
             return {'text':content}
+
+    def personality_trait(self, func: Callable[[], str]):
+        @wraps
+        def wrapper():
+            self.__add_message('system', func())
+        return wrapper
+            
 
     def __base_assumptions(self) -> None:
         self.context = []

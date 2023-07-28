@@ -18,12 +18,12 @@ def dailycapy_command(ack, say: Say):
     response = requests.get(url, timeout=10)
 
     response.raise_for_status()  # raises exception when not a 2xx response
-    response_json: str = ''
+    response_json = {}
     if response.status_code != 204:
         response_json = response.json()
 
     response_json = response.json()
-    if response_json != '' and response_json['success']:
+    if response_json != {} and response_json['success']:
         print('Sending capy of the day')
         data = response_json['data']
         say(

@@ -1,9 +1,10 @@
 import os
 import openai
-from assistant.types import AssistantAnswer
+from slack_sdk.models.blocks import ImageBlock
+from slack_sdk.models.blocks.basic_components import TextObject
 from functions.callable_function import CallableFunction
-from slack_message.types.blocks import ImageBlock
 
+from assistant.types import AssistantAnswer
 
 class GenerateImage(CallableFunction):
     prompt: str
@@ -18,17 +19,15 @@ class GenerateImage(CallableFunction):
             n=1,
             size="512x512"
         )
-        return {
-            'text': 'Here is your generated image:',
-            'blocks': [
-                {
-                    'type': 'image',
-                    'image_url': response['data'][0]['url'],
-                    'title': {
-                        'type': 'plain_text',
-                        'text': self.prompt
-                    },
-                    'alt_text': self.prompt
-                }
+        return AssistantAnswer(
+            text='Here is your generated image:',
+            blocks=[
+                ImageBlock(
+                    image_url=response['data'][0]['url'],
+                    title=TextObject(
+                        text=self.prompt
+                    ),
+                    alt_text=self.prompt
+                )
             ]
-        }
+        )

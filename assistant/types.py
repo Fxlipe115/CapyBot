@@ -1,8 +1,7 @@
-from typing import List, NotRequired, Optional, TypedDict, Union
-
-from slack_message.types.blocks import Blocks
+from typing import List, NotRequired, TypedDict, Union
+from slack_sdk.models.blocks import Block
 
 
 class AssistantAnswer(TypedDict):
-        text: Union[str, dict]
-        blocks: NotRequired[Optional[List[Blocks]]]
+    text: Union[str, dict]
+    blocks: NotRequired[List[Block]]
