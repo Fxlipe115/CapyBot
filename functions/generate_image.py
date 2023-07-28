@@ -24,7 +24,10 @@ class GenerateImage(CallableFunction):
                 {
                     'type': 'image',
                     'image_url': response['data'][0]['url'],
-                    'title': self.prompt,
+                    'title': {
+                        'type': 'plain_text',
+                        'text': self.prompt
+                    },
                     'alt_text': self.prompt
                 }
             ]
