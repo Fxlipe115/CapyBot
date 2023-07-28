@@ -52,23 +52,27 @@ def handle_message_events(say: Say, event):
     if 'thread_ts' in event and event['thread_ts'] != event['ts']:
         print('message')
         assistant = contexts.get_assistant(event['thread_ts'])
+        answer = assistant.get_answer(event['text'], event['user'])
         say(
             thread_ts=event['thread_ts'],
-            text=assistant.get_answer(event['text'], event['user'])
+            text=answer['text'],
+            blocks=answer['blocks']
         )
     elif event['channel_type'] == 'im':
         print('Event: message:im')
         assistant = contexts.get_assistant(event['user'])
-        say(assistant.get_answer(event['text'], event['user']))
+        say(**assistant.get_answer(event['text'], event['user']))
 
 
 @app.event('app_mention')
 def event_mention(say: Say, event):
     print('Event: app_mention')
     assistant = contexts.get_assistant(event['ts'])
+    answer = text=assistant.get_answer(event['text'], event['user'])
     say(
         thread_ts=event['ts'],
-        text=assistant.get_answer(event['text'], event['user'])
+        text=answer['text'],
+        blocks=answer['blocks']
     )
 
 

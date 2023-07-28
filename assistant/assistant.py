@@ -2,8 +2,10 @@ import json
 import os
 from typing import List, Literal, TypedDict
 import openai
+from assistant.types import AssistantAnswer
 
 from functions.functions import Functions
+from functions.generate_image import GenerateImage
 from functions.weather_report import WeatherReport
 
 Roles = Literal['system', 'user', 'assistant', 'function']
@@ -22,13 +24,21 @@ class Assistant():
         self.__base_assumptions()
         self.functions = Functions()
         self.functions.register(
-            'get_weather_report', 'Return the weather report for a given city', WeatherReport)
+            'get_weather_report',
+            'Return the weather report for a given city', 
+            WeatherReport
+        )
+        self.functions.register(
+            'generate_image', 
+            'Calls Dall-e with a prompt and returns a generated image', 
+            GenerateImage
+        )
 
     @property
     def model(self) -> str:
         return 'gpt-3.5-turbo-0613'
 
-    def get_answer(self, message: str, user_talking: str):
+    def get_answer(self, message: str, user_talking: str) -> AssistantAnswer:
         openai.organization = os.getenv('OPENAI_ORGANIZATION')
         openai.api_key = os.getenv('OPENAI_API_KEY')
 
@@ -46,7 +56,7 @@ class Assistant():
         else:
             content = completion.choices[0].message.content
             self.__add_message('assistant', content)
-            return content
+            return {'text':content}
 
     def __base_assumptions(self) -> None:
         self.context = []

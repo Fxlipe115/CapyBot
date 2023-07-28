@@ -1,5 +1,6 @@
 from typing import Any, List, Type
 from typing import Dict, TypedDict
+from assistant.types import AssistantAnswer
 from functions.callable_function import CallableFunction
 
 
@@ -33,9 +34,9 @@ class Functions:
     def get_functions(self) -> List[FunctionDescription]:
         return list(map(lambda x: x['description'], self.functions.values()))
 
-    def call_function(self, function_name: str, **arguments: Any) -> str:
+    def call_function(self, function_name: str, **arguments: Any) -> AssistantAnswer:
         completion_function = self.functions.get(function_name)
         if completion_function is not None:
             return completion_function['callableFunction'](**arguments).call()
         else:
-            return ''
+            return {'text': ''}
