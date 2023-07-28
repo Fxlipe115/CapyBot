@@ -30,7 +30,7 @@ class Assistant():
         )
         self.functions.register(
             'generate_image', 
-            'Calls Dall-e with a prompt and returns a generated image', 
+            'Calls Dall-e with a detailed prompt and returns a generated image', 
             GenerateImage
         )
 
