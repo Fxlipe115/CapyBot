@@ -1,7 +1,7 @@
 import os
 import openai
 from slack_sdk.models.blocks import ImageBlock
-from slack_sdk.models.blocks.basic_components import TextObject
+from slack_sdk.models.blocks.basic_components import PlainTextObject
 from functions.callable_function import CallableFunction
 
 from assistant.types import AssistantAnswer
@@ -24,7 +24,7 @@ class GenerateImage(CallableFunction):
             blocks=[
                 ImageBlock(
                     image_url=response['data'][0]['url'],
-                    title=TextObject(
+                    title=PlainTextObject(
                         text=self.prompt
                     ),
                     alt_text=self.prompt
