@@ -56,7 +56,7 @@ class Assistant():
         else:
             content = completion.choices[0].message.content
             self.__add_message('assistant', content)
-            return {'text':content}
+            return AssistantAnswer(text=content)
 
     def personality_trait(self, func: Callable[[], str]):
         @wraps

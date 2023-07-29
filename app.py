@@ -1,3 +1,4 @@
+from dataclasses import asdict
 import os
 from slack_bolt import App, Say
 from slack_bolt.adapter.socket_mode import SocketModeHandler
@@ -53,15 +54,12 @@ def handle_message_events(say: Say, event):
         print('message')
         assistant = contexts.get_assistant(event['thread_ts'])
         answer = assistant.get_answer(event['text'], event['user'])
-        say(
-            thread_ts=event['thread_ts'],
-            text=answer['text'],
-            blocks=answer.get('blocks')
-        )
+        answer.thread_ts = event['thread_ts']
+        say(**asdict(answer))
     elif event['channel_type'] == 'im':
         print('Event: message:im')
         assistant = contexts.get_assistant(event['user'])
-        say(**assistant.get_answer(event['text'], event['user']))
+        say(**asdict(assistant.get_answer(event['text'], event['user'])))
 
 
 @app.event('app_mention')
@@ -69,11 +67,8 @@ def event_mention(say: Say, event):
     print('Event: app_mention')
     assistant = contexts.get_assistant(event['ts'])
     answer = assistant.get_answer(event['text'], event['user'])
-    say(
-        thread_ts=event['ts'],
-        text=answer['text'],
-        blocks=answer.get('blocks')
-    )
+    answer.thread_ts = event['ts']
+    say(**asdict(answer))
 
 
 if __name__ == '__main__':

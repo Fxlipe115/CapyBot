@@ -39,4 +39,4 @@ class Functions:
         if completion_function is not None:
             return completion_function['callableFunction'](**arguments).call()
         else:
-            return {'text': ''}
+            return AssistantAnswer()
