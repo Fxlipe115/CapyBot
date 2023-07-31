@@ -8,7 +8,6 @@ import openai
 from assistant.types import AssistantAnswer, ChatCompletionResponse, Context, ContextMessage, Message, Roles
 
 from functions.functions import Functions
-from handlers.helpers import retrieve_thread
 
 class Assistant():
     _contexts: Dict[str, Context]
