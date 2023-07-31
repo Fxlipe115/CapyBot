@@ -18,6 +18,7 @@ def retrieve_replies(client: WebClient, channel: str, thread_ts: str):
 def bot_is_part_of_thread(event, client) -> bool:
     thread = retrieve_replies(client, event.channel, event.thread_ts)
     thread_parent: ThreadParent = thread.messages[0]
+    print(thread.messages)
     if thread_parent.reply_count < 6:
         return 'U05K30V08U9' in thread_parent.reply_users
     return False
