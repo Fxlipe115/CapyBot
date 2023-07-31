@@ -53,10 +53,10 @@ class Message:
     text: str
     event_ts: str
     channel: str
+    ts: str
     thread_ts: Optional[str] = None
     reply_count: Optional[int] = None
     replies: Optional[List[Reply]] = None
-    ts: Optional[str] = None
     channel_type: Optional[str] = None
 
     @classmethod
@@ -70,7 +70,7 @@ class Message:
             thread_ts=other.get('thread_ts'),
             reply_count=other.get('reply_count'),
             replies=None if other.get('replies') is None else list(map(Reply.from_dict, other['replies'])),
-            ts=other.get('ts'),
+            ts=other['ts'],
             channel_type=other.get('channel_type')
         )
 

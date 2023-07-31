@@ -8,8 +8,7 @@ import openai
 from assistant.types import AssistantAnswer, ChatCompletionResponse, Context, ContextMessage, Message, Roles
 
 from functions.functions import Functions
-from functions.generate_image import GenerateImage
-from functions.weather_report import WeatherReport
+from handlers.helpers import retrieve_thread
 
 class Assistant():
     _contexts: Dict[str, Context]
@@ -28,15 +27,15 @@ class Assistant():
     @property
     def functions(self) -> Functions:
         return self._functions
+    
+    @property
+    def contexts(self) -> Dict[str, Context]:
+        return self._contexts
 
-    def get_answer(self, message: str, user_talking: str, context: str) -> AssistantAnswer:
+    def get_answer(self, message: str, context: str) -> AssistantAnswer:
         openai.organization = os.getenv('OPENAI_ORGANIZATION')
         openai.api_key = os.getenv('OPENAI_API_KEY')
 
-        self.__add_message(
-            Roles.SYSTEM,
-            f'The name of the person talking to you is <@{user_talking}>!',
-            context)
         self.__add_message(Roles.USER, message, context)
 
         completion = self.__call_chat_gpt(context).choices[0]
@@ -120,3 +119,12 @@ class Assistant():
                 functions=self._functions.get_functions()
             )
         )
+    
+    def add_system_message(self, content: str, context: str):
+        self.__add_message(Roles.SYSTEM, content, context)
+    
+    def add_user_message(self, content: str, context: str):
+        self.__add_message(Roles.USER, content, context)
+    
+    def add_assistant_message(self, content: str, context: str):
+        self.__add_message(Roles.ASSISTANT, content, context)
