@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Dict, List, Literal, Optional, Sequence, Union
+from enum import Enum
+from typing import Any, Dict, List, Optional, Sequence, Union
 from dataclasses_json import dataclass_json
 from slack_sdk.models.blocks import Block
 from slack_sdk.models.attachments import Attachment
@@ -26,7 +27,11 @@ class AssistantAnswer:
     parse: Optional[str] = None  # none, full
     metadata: Optional[Union[Dict, Metadata]] = None
 
-Roles = Literal['system', 'user', 'assistant', 'function']
+class Roles(Enum):
+    SYSTEM = 'system'
+    USER = 'user'
+    ASSISTANT = 'assistant'
+    FUNCTION = 'function'
 
 @dataclass_json
 @dataclass
@@ -34,14 +39,33 @@ class FunctionCall:
     name: str
     arguments: str
 
-@dataclass_json
+    @classmethod
+    def from_dict(cls, other: Dict[str, Any]):
+        return FunctionCall(
+            name=other['name'],
+            arguments=other['arguments']
+        )
+
 @dataclass
 class Message:
     content: str
     role: Roles
     function_call: Optional[FunctionCall] = None
 
-FinishReason = Literal['stop', 'length', 'function_call', 'content_filter', 'null']
+    @classmethod
+    def from_dict(cls, other: Dict[str, Any]):
+        return Message(
+            content=other['content'],
+            role=other['role'],
+            function_call=FunctionCall.from_dict(other['function_call']) if other.get('function_call') is not None else None
+        )
+
+class FinishReason(Enum):
+    STOP = 'stop'
+    LENGTH = 'length'
+    FUNCTION_CALL = 'function_call'
+    CONTENT_FILTER = 'content_filter'
+    NULL = 'null'
 
 @dataclass_json
 @dataclass
@@ -50,6 +74,14 @@ class Choice:
     index: int
     message: Message
 
+    @classmethod
+    def from_dict(cls, other: Dict[str, Any]):
+        return Choice(
+            finish_reason=other['finish_reason'],
+            index=other['index'],
+            message=Message.from_dict(other['message'])
+        )
+
 @dataclass_json
 @dataclass
 class Usage:
@@ -57,7 +89,6 @@ class Usage:
     prompt_tokens: int
     total_tokens: int
 
-@dataclass_json
 @dataclass
 class ChatCompletionResponse:
     choices: List[Choice]
@@ -66,6 +97,17 @@ class ChatCompletionResponse:
     model: str
     usage: Usage
     object: str = 'chat.completion'
+
+    @classmethod
+    def from_dict(cls, other: Dict[str, Any]):
+        return ChatCompletionResponse(
+            choices=list(map(Choice.from_dict, other['choices'])),
+            created=other['created'],
+            id=other['id'],
+            model=other['model'],
+            usage=other['usage'],
+            object=other['object']
+        )
 
 @dataclass_json
 @dataclass

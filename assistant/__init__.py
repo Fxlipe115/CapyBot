@@ -34,10 +34,10 @@ class Assistant():
         openai.api_key = os.getenv('OPENAI_API_KEY')
 
         self.__add_message(
-            'system',
+            Roles.SYSTEM,
             f'The name of the person talking to you is <@{user_talking}>!',
             context)
-        self.__add_message('user', message, context)
+        self.__add_message(Roles.USER, message, context)
 
         completion = self.__call_chat_gpt(context).choices[0]
 
@@ -46,14 +46,14 @@ class Assistant():
             function_name = function_call.name
             arguments = json.loads(function_call.arguments)
             self.__add_message(
-                'assistant',
+                Roles.ASSISTANT,
                 f'Here is the result of function {function_name} with arguments {function_call.arguments}',
                 context
             )
             return self._functions.call_function(function_name, **arguments)
         else:
             content = completion.message.content
-            self.__add_message('assistant', content, context)
+            self.__add_message(Roles.ASSISTANT, content, context)
             return AssistantAnswer(text=content)
 
     def set_personality_trait(self, personality_trait: str):
@@ -103,7 +103,7 @@ class Assistant():
         for personality_trait in self._personality_traits:
             personality_traits.append(
                 ContextMessage(
-                    role='system',
+                    role=Roles.SYSTEM,
                     content=personality_trait
                 )
             )

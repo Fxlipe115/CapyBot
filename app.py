@@ -1,12 +1,13 @@
 import os
 from slack_bolt import Ack, App, Say
 from slack_bolt.adapter.socket_mode import SocketModeHandler
+from slack_sdk import WebClient
 import requests
 from assistant import Assistant
 from functions.generate_image import GenerateImage
 from functions.weather_report import WeatherReport
 from handlers import handle_mention_event, handle_message_event
-from slack_message.types.slack_message import Message, Event
+from slack_message.types import Message, Event
 
 # Install the Slack app and get xoxb- token in advance
 app = App(token=os.environ['SLACK_BOT_TOKEN'])
@@ -71,8 +72,8 @@ def dailycapy_command(ack: Ack, say: Say):
         say('Daily Capy failed. Try again later.')
 
 @app.event('message')
-def event_message(say: Say, event: Event):
-    handle_message_event(say, Message.from_dict(event), assistant)
+def event_message(say: Say, client: WebClient, event):
+    handle_message_event(say, Message.from_dict(event), client, assistant)
 
 
 

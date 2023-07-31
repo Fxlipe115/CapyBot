@@ -6,4 +6,4 @@ disable=
     missing-module-docstring
 
 [TYPECHECK]
-ignored-classes=slack_message.types.slack_message.Message, slack_message.types.slack_message.Event
+generated-members=slack_message.types.slack_message.Message, slack_message.types.slack_message.Event
