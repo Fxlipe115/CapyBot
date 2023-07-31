@@ -79,14 +79,14 @@ class Assistant():
         context = self._contexts[context_key]
         time_since_creation = datetime.now() - context.creation_ts
         print(
-            f'Time since creation of context {context}: {time_since_creation}')
+            f'Time since creation of context {context_key}: {time_since_creation}')
         return time_since_creation.days > 1
 
     def __is_stale(self, context_key: str) -> bool:
         context = self._contexts[context_key]
         time_since_update = datetime.now() - context.last_update_ts
         print(
-            f'Time since context {context} was last used: {time_since_update}')
+            f'Time since context {context_key} was last used: {time_since_update}')
         return time_since_update.seconds > 60 * 30
 
 
