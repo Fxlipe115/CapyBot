@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 from datetime import datetime
-from typing import Any, Dict, List, Literal, Optional, Sequence, Union
+from typing import Dict, List, Literal, Optional, Sequence, Union
+from dataclasses_json import dataclass_json
 from slack_sdk.models.blocks import Block
 from slack_sdk.models.attachments import Attachment
 from slack_sdk.models.metadata import Metadata
@@ -53,6 +54,7 @@ class Usage:
     prompt_tokens: int
     total_tokens: int
 
+@dataclass_json
 @dataclass
 class ChatCompletionResponse:
     choices: List[Choice]
