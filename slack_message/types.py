@@ -86,9 +86,9 @@ class ThreadParent:
     reply_users_count: int
     latest_reply: str
     subscribed: bool
-    last_read: str
     unread_count: int
     ts: str
+    last_read: Optional[str] = None
     replies: Optional[List[Reply]] = None #deprecated
 
     @classmethod
@@ -103,7 +103,7 @@ class ThreadParent:
             reply_users_count=other['reply_users_count'],
             latest_reply=other['latest_reply'],
             subscribed=other['subscribed'],
-            last_read=other['last_read'],
+            last_read=other.get('last_read'),
             unread_count=other['unread_count'],
             ts=other['ts'],
             replies=None if other.get('replies') is None else list(map(Reply.from_dict, other['replies']))
