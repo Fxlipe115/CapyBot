@@ -32,7 +32,6 @@ Roles = Literal['system', 'user', 'assistant', 'function']
 @dataclass
 class FunctionCall:
     name: str
-    description: str
     arguments: str
 
 @dataclass_json
