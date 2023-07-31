@@ -131,12 +131,12 @@ class ThreadReply:
 
 @dataclass
 class ResponseMetadata:
-    next_cursor: Optional[str]
+    next_cursor: str
 
     @classmethod
     def from_dict(cls, other: Dict[str, Any]):
         return ResponseMetadata(
-            next_cursor=other.get('next_cursor')
+            next_cursor=other['next_cursor']
         )
 
 @dataclass
@@ -144,7 +144,7 @@ class ConversationReplies:
     ok: bool
     messages: List[Union[ThreadParent, ThreadReply]]
     has_more: bool
-    response_metadata: ResponseMetadata
+    response_metadata: Optional[ResponseMetadata]
 
     @classmethod
     def from_dict(cls, other: Union[Dict[str, Any], SlackResponse]):
@@ -152,5 +152,5 @@ class ConversationReplies:
             ok=other['ok'],
             messages=list(map(lambda x: ThreadParent.from_dict(x) if x.get('reply_count') is not None else ThreadReply.from_dict(x), other['messages'])),
             has_more=other['has_more'],
-            response_metadata=ResponseMetadata.from_dict(other['response_metadata'])
+            response_metadata=None if other.get('response_metadata') is None else ResponseMetadata.from_dict(other['response_metadata'])
         )
