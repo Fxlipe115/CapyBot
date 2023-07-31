@@ -28,12 +28,14 @@ class AssistantAnswer:
 
 Roles = Literal['system', 'user', 'assistant', 'function']
 
+@dataclass_json
 @dataclass
 class FunctionCall:
     name: str
     description: str
     arguments: str
 
+@dataclass_json
 @dataclass
 class Message:
     content: str
@@ -42,12 +44,14 @@ class Message:
 
 FinishReason = Literal['stop', 'length', 'function_call', 'content_filter', 'null']
 
+@dataclass_json
 @dataclass
 class Choice:
     finish_reason: FinishReason
     index: int
     message: Message
 
+@dataclass_json
 @dataclass
 class Usage:
     completion_tokens: int
@@ -64,11 +68,13 @@ class ChatCompletionResponse:
     usage: Usage
     object: str = 'chat.completion'
 
+@dataclass_json
 @dataclass
 class ContextMessage:
     content: str
     role: Roles
 
+@dataclass_json
 @dataclass
 class Context:
     messages: List[ContextMessage]
