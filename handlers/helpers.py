@@ -20,5 +20,5 @@ def bot_is_part_of_thread(event, client) -> bool:
     thread_parent: ThreadParent = thread.messages[0]
     print(thread.messages)
     if thread_parent.reply_count < 6:
-        return 'U05K30V08U9' in thread_parent.reply_users
+        return 'U05K30V08U9' in thread_parent.reply_users or thread_parent.user == 'U05K30V08U9'
     return False
