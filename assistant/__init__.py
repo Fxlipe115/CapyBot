@@ -53,14 +53,14 @@ class Assistant():
     def set_personality_trait(self, personality_trait: str):
         self._personality_traits.append(personality_trait)
             
-    def __get_context(self, context: str):
+    def __get_context(self, context: str) -> Context:
         self.__delete_obsolete_contexts()
         if context not in self._contexts:
             print(f'Creating context {context}')
             self._contexts[context] = Context(messages=self.__personality())
         existing_context = self._contexts[context]
         existing_context.last_update_ts = datetime.now()
-        return self._contexts[context].messages
+        return self._contexts[context]
     
     def __delete_obsolete_contexts(self) -> None:
         for context in self.__check_obsolete_contexts():
@@ -138,13 +138,13 @@ class Assistant():
         return personality_traits
 
     def __add_message(self, role: Roles, content: str, context: str):
-        self._contexts[context].messages.append(ContextMessage(role=role, content=content))
+        self.__get_context(context).messages.append(ContextMessage(role=role, content=content))
 
     def __call_chat_gpt(self, context: str) -> ChatCompletionResponse:
         return ChatCompletionResponse.from_dict(
             openai.ChatCompletion.create(
                 model=self.model,
-                messages=self.__get_context(context),
+                messages=self.__get_context(context).messages,
                 functions=self._functions.get_functions()
             )
         )
