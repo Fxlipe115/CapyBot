@@ -1,3 +1,4 @@
+import dataclasses
 from datetime import datetime
 from functools import wraps
 import json
@@ -144,7 +145,7 @@ class Assistant():
         return ChatCompletionResponse.from_dict(
             openai.ChatCompletion.create(
                 model=self.model,
-                messages=self.__get_context(context).messages,
+                messages=map(dataclasses.asdict, self.__get_context(context).messages),
                 functions=self._functions.get_functions()
             )
         )
