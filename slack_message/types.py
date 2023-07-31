@@ -150,7 +150,7 @@ class ConversationReplies:
     def from_dict(cls, other: Union[Dict[str, Any], SlackResponse]):
         return ConversationReplies(
             ok=other['ok'],
-            messages=ThreadParent.from_dict(other['messages']) if other['messages'].get('reply_count') is not None else ThreadReply.from_dict(other['messages']),
+            messages=list(map(lambda x: ThreadParent.from_dict(x) if x.get('reply_count') is not None else ThreadReply.from_dict(x), other['messages'])),
             has_more=other['has_more'],
             response_metadata=ResponseMetadata.from_dict(other['response_metadata'])
         )
