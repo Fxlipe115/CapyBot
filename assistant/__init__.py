@@ -45,6 +45,11 @@ class Assistant():
             function_call = completion.message.function_call
             function_name = function_call.name
             arguments = json.loads(function_call.arguments)
+            self.__add_message(
+                'assistant',
+                f'Here is the result of function {function_name} with arguments {function_call.arguments}',
+                context
+            )
             return self._functions.call_function(function_name, **arguments)
         else:
             content = completion.message.content
@@ -58,13 +63,12 @@ class Assistant():
         map(self.set_personality_trait, personality_traits)
             
     def __get_context(self, context_key: str) -> Context:
+        self.__delete_obsolete_contexts()
         if context_key not in self._contexts:
             print(f'Creating context {context_key}')
             self._contexts[context_key] = Context(messages=self.__personality())
         context = self._contexts[context_key]
         context.last_update_ts = datetime.now()
-        if context.messages[-1].role == 'user':
-            self.__delete_obsolete_contexts()
         return self._contexts[context_key]
     
     def __delete_obsolete_contexts(self) -> None:
