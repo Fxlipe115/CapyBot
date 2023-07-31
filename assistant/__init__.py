@@ -145,7 +145,7 @@ class Assistant():
         return ChatCompletionResponse.from_dict(
             openai.ChatCompletion.create(
                 model=self.model,
-                messages=map(dataclasses.asdict, self.__get_context(context).messages),
+                messages=list(map(dataclasses.asdict, self.__get_context(context).messages)),
                 functions=self._functions.get_functions()
             )
         )
