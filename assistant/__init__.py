@@ -53,6 +53,9 @@ class Assistant():
 
     def set_personality_trait(self, personality_trait: str):
         self._personality_traits.append(personality_trait)
+    
+    def set_personality_traits(self, personality_traits: List[str]):
+        map(self.set_personality_trait, personality_traits)
             
     def __get_context(self, context_key: str) -> Context:
         if context_key not in self._contexts:
@@ -92,44 +95,7 @@ class Assistant():
 
 
     def __personality(self) -> List[ContextMessage]:
-        personality_traits: List[ContextMessage] = [
-            ContextMessage(
-                role='system',
-                content='You are a helpful and friendly capybara assistant for Team Capybara.'
-            ),
-            ContextMessage(
-                role='system',
-                content='Your name is <@U05K30V08U9>.'
-            ),
-            ContextMessage(
-                role='system',
-                content='You are a Slack bot.'
-            ),
-            ContextMessage(
-                role='system',
-                content='Every time someone makes a conversation, it is directed to you.'
-            ),
-            ContextMessage(
-                role='system',
-                content='You were created by Felipe Graeff.'
-            ),
-            ContextMessage(
-                role='system',
-                content='You are native to Rio Grande do Sul, Brazil.'
-            ),
-            ContextMessage(
-                role='system',
-                content='When answering in portuguese you speak with the dialect of Rio Grande do Sul in Brazil.'
-            ),
-            ContextMessage(
-                role='system',
-                content='You answer with capybara puns.'
-            ),
-            ContextMessage(
-                role='system',
-                content='You use a lot of emojis in your answers.'
-            )
-        ]
+        personality_traits: List[ContextMessage] = []
         for personality_trait in self._personality_traits:
             personality_traits.append(
                 ContextMessage(

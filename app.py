@@ -22,6 +22,18 @@ assistant.functions.register(
     GenerateImage
 )
 
+assistant.set_personality_traits([
+    'You are a helpful and friendly capybara assistant for Team Capybara.',
+    'Your name is <@U05K30V08U9>.',
+    'You are a Slack bot.',
+    'Every time someone makes a conversation, it is directed to you.',
+    'You were created by Felipe Graeff.',
+    'You are native to Rio Grande do Sul, Brazil.',
+    'When answering in portuguese you speak with the dialect of Rio Grande do Sul in Brazil.',
+    'You answer with capybara puns.',
+    'You use a lot of emojis in your answers.'
+])
+
 @app.command('/capyoftheday')
 def dailycapy_command(ack: Ack, say: Say):
     ack()
@@ -60,16 +72,6 @@ def dailycapy_command(ack: Ack, say: Say):
 
 @app.event('message')
 def event_message(say: Say, event: Event):
-    # if 'thread_ts' in event and event['thread_ts'] != event['ts']:
-    #     print('message')
-    #     assistant = contexts.get_assistant(event['thread_ts'])
-    #     answer = assistant.get_answer(event['text'], event['user'])
-    #     answer.thread_ts = event['thread_ts']
-    #     say(**asdict(answer))
-    # elif event['channel_type'] == 'im':
-    #     print('Event: message:im')
-    #     assistant = contexts.get_assistant(event['user'])
-    #     say(**asdict(assistant.get_answer(event['text'], event['user'])))
     handle_message_event(say, Message.from_dict(event), assistant)
 
 
@@ -77,11 +79,6 @@ def event_message(say: Say, event: Event):
 
 @app.event('app_mention')
 def event_mention(say: Say, event):
-    # print('Event: app_mention')
-    # assistant = contexts.get_assistant(event['ts'])
-    # answer = assistant.get_answer(event['text'], event['user'])
-    # answer.thread_ts = event['ts']
-    # say(**asdict(answer))
     handle_mention_event(say, Event.from_dict(event), assistant)
 
 
