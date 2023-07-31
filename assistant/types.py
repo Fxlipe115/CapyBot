@@ -27,7 +27,7 @@ class AssistantAnswer:
     parse: Optional[str] = None  # none, full
     metadata: Optional[Union[Dict, Metadata]] = None
 
-class Roles(Enum):
+class Roles(str, Enum):
     SYSTEM = 'system'
     USER = 'user'
     ASSISTANT = 'assistant'
@@ -60,7 +60,7 @@ class Message:
             function_call=FunctionCall.from_dict(other['function_call']) if other.get('function_call') is not None else None
         )
 
-class FinishReason(Enum):
+class FinishReason(str, Enum):
     STOP = 'stop'
     LENGTH = 'length'
     FUNCTION_CALL = 'function_call'
