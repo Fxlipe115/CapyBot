@@ -54,14 +54,15 @@ class Assistant():
     def set_personality_trait(self, personality_trait: str):
         self._personality_traits.append(personality_trait)
             
-    def __get_context(self, context: str) -> Context:
-        self.__delete_obsolete_contexts()
-        if context not in self._contexts:
-            print(f'Creating context {context}')
-            self._contexts[context] = Context(messages=self.__personality())
-        existing_context = self._contexts[context]
-        existing_context.last_update_ts = datetime.now()
-        return self._contexts[context]
+    def __get_context(self, context_key: str) -> Context:
+        if context_key not in self._contexts:
+            print(f'Creating context {context_key}')
+            self._contexts[context_key] = Context(messages=self.__personality())
+        context = self._contexts[context_key]
+        context.last_update_ts = datetime.now()
+        if context.messages[-1].role == 'user':
+            self.__delete_obsolete_contexts()
+        return self._contexts[context_key]
     
     def __delete_obsolete_contexts(self) -> None:
         for context in self.__check_obsolete_contexts():
