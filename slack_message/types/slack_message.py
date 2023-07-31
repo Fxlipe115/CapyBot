@@ -34,10 +34,10 @@ class Message:
     type: str
     user: str
     text: str
-    thread_ts: Optional[str]
-    reply_count: Optional[int]
-    replies: Optional[List[Reply]]
-    ts: Optional[str]
-    channel: Optional[str]
     event_ts: str
-    channel_type: Optional[str]
+    thread_ts: Optional[str] = None
+    reply_count: Optional[int] = None
+    replies: Optional[List[Reply]] = None
+    ts: Optional[str] = None
+    channel: Optional[str] = None
+    channel_type: Optional[str] = None
