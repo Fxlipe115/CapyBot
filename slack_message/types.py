@@ -131,12 +131,12 @@ class ThreadReply:
 
 @dataclass
 class ResponseMetadata:
-    next_cursor: str
+    next_cursor: Optional[str]
 
     @classmethod
     def from_dict(cls, other: Dict[str, Any]):
         return ResponseMetadata(
-            next_cursor=other['next_cursor']
+            next_cursor=other.get('next_cursor')
         )
 
 @dataclass
