@@ -7,6 +7,7 @@ from handlers.helpers import bot_is_part_of_thread, retrieve_thread
 
 from slack_message.types import Event, Message
 
+
 def handle_message_event(say: Say, event: Message, client: WebClient, assistant: Assistant):
     if event.thread_ts is not None and event.thread_ts != event.ts:
         if bot_is_part_of_thread(event, client):
@@ -24,6 +25,7 @@ def handle_message_event(say: Say, event: Message, client: WebClient, assistant:
             )
         say(**asdict(assistant.get_answer(event.text, event.user)))
 
+
 def _read_previous_conversation(event, client, assistant):
     if event.thread_ts not in assistant.contexts:
         for message in retrieve_thread(client, event.channel, event.thread_ts).messages:
@@ -31,10 +33,11 @@ def _read_previous_conversation(event, client, assistant):
                 assistant.add_assistant_message(message.text, event.thread_ts)
             else:
                 assistant.add_system_message(
-                            f'The name of the person talking to you is <@{event.user}>!',
-                            event.ts
-                        )
+                    f'The name of the person talking to you is <@{event.user}>!',
+                    event.ts
+                )
                 assistant.add_user_message(message.text, event.thread_ts)
+
 
 def handle_mention_event(say: Say, event: Event, assistant: Assistant):
     print('Event: app_mention')

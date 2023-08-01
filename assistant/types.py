@@ -27,11 +27,13 @@ class AssistantAnswer:
     parse: Optional[str] = None  # none, full
     metadata: Optional[Union[Dict, Metadata]] = None
 
+
 class Roles(str, Enum):
     SYSTEM = 'system'
     USER = 'user'
     ASSISTANT = 'assistant'
     FUNCTION = 'function'
+
 
 @dataclass_json
 @dataclass
@@ -46,6 +48,7 @@ class FunctionCall:
             arguments=other['arguments']
         )
 
+
 @dataclass
 class Message:
     content: str
@@ -57,8 +60,10 @@ class Message:
         return Message(
             content=other['content'],
             role=other['role'],
-            function_call=FunctionCall.from_dict(other['function_call']) if other.get('function_call') is not None else None
+            function_call=FunctionCall.from_dict(other['function_call']) if other.get(
+                'function_call') is not None else None
         )
+
 
 class FinishReason(str, Enum):
     STOP = 'stop'
@@ -66,6 +71,7 @@ class FinishReason(str, Enum):
     FUNCTION_CALL = 'function_call'
     CONTENT_FILTER = 'content_filter'
     NULL = 'null'
+
 
 @dataclass_json
 @dataclass
@@ -82,12 +88,14 @@ class Choice:
             message=Message.from_dict(other['message'])
         )
 
+
 @dataclass_json
 @dataclass
 class Usage:
     completion_tokens: int
     prompt_tokens: int
     total_tokens: int
+
 
 @dataclass
 class ChatCompletionResponse:
@@ -109,11 +117,13 @@ class ChatCompletionResponse:
             object=other['object']
         )
 
+
 @dataclass_json
 @dataclass
 class ContextMessage:
     content: str
     role: Roles
+
 
 @dataclass_json
 @dataclass

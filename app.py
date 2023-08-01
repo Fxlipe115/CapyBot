@@ -14,12 +14,12 @@ app = App(token=os.environ['SLACK_BOT_TOKEN'])
 assistant = Assistant()
 assistant.functions.register(
     'get_weather_report',
-    'Return the weather report for a given city', 
+    'Return the weather report for a given city',
     WeatherReport
 )
 assistant.functions.register(
-    'generate_image', 
-    'Calls Dall-e with a detailed prompt and returns a generated image', 
+    'generate_image',
+    'Calls Dall-e with a detailed prompt and returns a generated image',
     GenerateImage
 )
 
@@ -34,6 +34,7 @@ assistant.set_personality_traits([
     'You answer with capybara puns.',
     'You use a lot of emojis in your answers.'
 ])
+
 
 @app.command('/capyoftheday')
 def dailycapy_command(ack: Ack, say: Say):
@@ -71,11 +72,10 @@ def dailycapy_command(ack: Ack, say: Say):
     else:
         say('Daily Capy failed. Try again later.')
 
+
 @app.event('message')
 def event_message(say: Say, client: WebClient, event):
     handle_message_event(say, Message.from_dict(event), client, assistant)
-
-
 
 
 @app.event('app_mention')

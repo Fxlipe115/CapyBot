@@ -11,9 +11,11 @@ def retrieve_message(client: WebClient, channel: str, ts: str):
         limit=1
     )
 
+
 def retrieve_thread(client: WebClient, channel: str, thread_ts: str):
     replies = client.conversations_replies(channel=channel, ts=thread_ts)
     return ConversationReplies.from_dict(replies)
+
 
 def bot_is_part_of_thread(event, client) -> bool:
     thread = retrieve_thread(client, event.channel, event.thread_ts)
