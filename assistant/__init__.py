@@ -54,6 +54,7 @@ class Assistant():
             return AssistantAnswer(text=content)
 
     def set_personality_trait(self, personality_trait: str):
+        print(f'Setting personality trait: {personality_trait}')
         self._personality_traits.append(personality_trait)
 
     def set_personality_traits(self, personality_traits: List[str]):
