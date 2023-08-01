@@ -2,7 +2,6 @@ import dataclasses
 from datetime import datetime
 from functools import wraps
 import json
-import os
 from typing import Dict, List
 import openai
 from assistant.types import AssistantAnswer, ChatCompletionResponse, Context, ContextMessage, Roles
@@ -15,10 +14,12 @@ class Assistant():
     _functions: Functions
     _personality_traits: List[str]
 
-    def __init__(self) -> None:
+    def __init__(self, openai_organization: str, openai_api_key: str) -> None:
         self._personality_traits = []
         self._functions = Functions()
         self._contexts = {}
+        openai.organization = openai_organization
+        openai.api_key = openai_api_key
 
     @property
     def model(self) -> str:
@@ -33,9 +34,6 @@ class Assistant():
         return self._contexts
 
     def get_answer(self, message: str, context: str) -> AssistantAnswer:
-        openai.organization = os.getenv('OPENAI_ORGANIZATION')
-        openai.api_key = os.getenv('OPENAI_API_KEY')
-
         self.__add_message(Roles.USER, message, context)
 
         completion = self.__call_chat_gpt(context).choices[0]

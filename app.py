@@ -1,17 +1,27 @@
-import os
 from slack_bolt import Ack, App, Say
 from slack_bolt.adapter.socket_mode import SocketModeHandler
 from slack_sdk import WebClient
+from environs import Env
 import requests
+
 from assistant import Assistant
 from functions.generate_image import GenerateImage
 from functions.weather_report import WeatherReport
 from handlers import handle_mention_event, handle_message_event
 from slack_message.types import Message, Event
 
+env = Env()
+env.read_env()
+SLACK_BOT_TOKEN = env('SLACK_BOT_TOKEN')
+SLACK_APP_TOKEN = env('SLACK_APP_TOKEN')
+PERSONALITY_TRAITS = env.list('PERSONALITY', subcast=lambda x: x.strip('\'"'), delimiter=':')
+OPENAI_ORGANIZATION = env('OPENAI_ORGANIZATION')
+OPENAI_API_KEY = env('OPENAI_API_KEY')
+
+
 # Install the Slack app and get xoxb- token in advance
-app = App(token=os.environ['SLACK_BOT_TOKEN'])
-assistant = Assistant()
+app = App(token=SLACK_BOT_TOKEN)
+assistant = Assistant(OPENAI_ORGANIZATION, OPENAI_API_KEY)
 assistant.functions.register(
     'get_weather_report',
     'Return the weather report for a given city',
@@ -23,17 +33,7 @@ assistant.functions.register(
     GenerateImage
 )
 
-assistant.set_personality_traits([
-    'You are a helpful and friendly capybara assistant for Team Capybara.',
-    'Your name is <@U05K30V08U9>.',
-    'You are a Slack bot.',
-    'Every time someone makes a conversation, it is directed to you.',
-    'You were created by Felipe Graeff.',
-    'You are native to Rio Grande do Sul, Brazil.',
-    'When answering in portuguese you speak with the dialect of Rio Grande do Sul in Brazil.',
-    'You answer with capybara puns.',
-    'You use a lot of emojis in your answers.'
-])
+assistant.set_personality_traits(PERSONALITY_TRAITS)
 
 
 @app.command('/capyoftheday')
@@ -84,4 +84,4 @@ def event_mention(say: Say, event):
 
 
 if __name__ == '__main__':
-    SocketModeHandler(app, os.environ['SLACK_APP_TOKEN']).start()
+    SocketModeHandler(app, SLACK_APP_TOKEN).start()
