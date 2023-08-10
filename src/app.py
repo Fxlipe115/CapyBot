@@ -10,7 +10,7 @@ from functions.weather_report import WeatherReport
 from handlers import handle_mention_event, handle_message_event
 from slack_message.types import Message, Event
 
-env = Env()
+env = Env(expand_vars=True)
 env.read_env()
 SLACK_BOT_TOKEN = env('SLACK_BOT_TOKEN')
 SLACK_APP_TOKEN = env('SLACK_APP_TOKEN')
@@ -33,6 +33,7 @@ assistant.functions.register(
     GenerateImage
 )
 
+print(PERSONALITY_TRAITS)
 assistant.set_personality_traits(PERSONALITY_TRAITS)
 
 
