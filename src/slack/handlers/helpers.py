@@ -1,6 +1,6 @@
 from slack_sdk import WebClient
 
-from slack_message.types import ConversationReplies, ThreadParent
+from slack.slack_message.types import ConversationReplies, ThreadParent
 
 
 def retrieve_message(client: WebClient, channel: str, ts: str):

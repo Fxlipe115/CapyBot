@@ -5,10 +5,10 @@ from environs import Env
 import requests
 
 from assistant import Assistant
-from functions.generate_image import GenerateImage
-from functions.weather_report import WeatherReport
-from handlers import handle_mention_event, handle_message_event
-from slack_message.types import Message, Event
+from assistant.functions.generate_image import GenerateImage
+from assistant.functions.weather_report import WeatherReport
+from slack.handlers import handle_mention_event, handle_message_event
+from slack.slack_message.types import Message, Event
 
 env = Env(expand_vars=True)
 env.read_env()

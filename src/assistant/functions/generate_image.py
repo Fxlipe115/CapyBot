@@ -3,7 +3,7 @@ from typing_extensions import override
 import openai
 from slack_sdk.models.blocks import ImageBlock
 from slack_sdk.models.blocks.basic_components import PlainTextObject
-from functions.callable_function import CallableFunction
+from assistant.functions.callable_function import CallableFunction
 
 from assistant.types import AssistantAnswer
 

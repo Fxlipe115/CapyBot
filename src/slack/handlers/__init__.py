@@ -3,9 +3,9 @@ from dataclasses import asdict
 from slack_bolt import Say
 from slack_sdk import WebClient
 from assistant import Assistant
-from handlers.helpers import bot_is_part_of_thread, retrieve_thread
+from slack.handlers.helpers import bot_is_part_of_thread, retrieve_thread
 
-from slack_message.types import Event, Message
+from slack.slack_message.types import Event, Message
 
 
 def handle_message_event(say: Say, event: Message, client: WebClient, assistant: Assistant):

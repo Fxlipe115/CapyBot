@@ -1,7 +1,7 @@
 from typing import Literal
 from typing_extensions import override
 from assistant.types import AssistantAnswer
-from functions.callable_function import CallableFunction
+from assistant.functions.callable_function import CallableFunction
 
 
 class WeatherReport(CallableFunction):

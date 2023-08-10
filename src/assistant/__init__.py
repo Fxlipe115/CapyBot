@@ -6,7 +6,7 @@ from typing import Dict, List
 import openai
 from assistant.types import AssistantAnswer, ChatCompletionResponse, Context, ContextMessage, Roles
 
-from functions.functions import Functions
+from assistant.functions import Functions
 
 
 class Assistant():
