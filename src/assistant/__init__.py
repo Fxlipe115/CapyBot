@@ -58,7 +58,7 @@ class Assistant():
         self._personality_traits.append(personality_trait)
 
     def set_personality_traits(self, personality_traits: List[str]):
-        map(self.set_personality_trait, personality_traits)
+        list(map(self.set_personality_trait, personality_traits))
 
     def __get_context(self, context_key: str) -> Context:
         self.__delete_obsolete_contexts()
